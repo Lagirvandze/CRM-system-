@@ -17,67 +17,177 @@
             $btnTableArrowCreateDate = document.getElementById('table-btn-arrow-createDate');
             $btnTableUpdateDate = document.getElementById('table-btn-updateDate');
             $btnTableArrowUpdateDate = document.getElementById('table-btn-arrow-updateDate');
-        // элементы формы добавления
-            $formClient = document.getElementById('formClient');
-            $inputFormName = document.getElementById('inputName');
-            $inputFormSurname = document.getElementById('inputSurname');
-            $inputFormLastname = document.getElementById('inputLastame');
-            $placeHolderInputFormName = document.getElementById('placeholderInputName');
-            $placeHolderInputFormSurname = document.getElementById('placeholderInputSurname');
-            $placeHolderInputFormLastname = document.getElementById('placeholderInputLastname');
-            $divFormContacts = document.getElementById('div-contacts');
-            $divFormContacts1 = document.getElementById('div-contacts-1');
-            $btnAddContact = document.getElementById('btn-add-contact');
-            $btnSubmitForm = document.getElementById('btn-submit-formClien');
-
-          
-            // $titleFormNewClient = document.querySelector('.form__title-new');
-            // $titleFormUpdateClient = document.querySelector('.form__title-update');
-
-            $containerForm = document.getElementById('container-form');
+        
             $btnAddClient = document.getElementById('btn-add-client');
-            $btnCloseFormClient = document.getElementById('btn-close-formClient');
-            $btnCancelFormClient = document.getElementById('btnCancelFormClient');
-            $btnDeleteFormUpdateClient = document.getElementById('btnDeleteFormUpdateClient');
-            $spanIDFormUpdateClient = document.getElementById('formTitleId');
+
             $containerClients = document.getElementById('clients');
 
             $searchClientsInput = document.getElementById('search');
 
             $modalWindow = document.getElementById('modalWindow');
-            $spinnerTableBody = document.getElementById('spinnerTBody');
+            $spinnerTableBody = document.getElementById('spinner-table-body');
+            $mainError = document.querySelector('.error');
 
             $btnOpenSearch = document.querySelector('.header__logo-btn');
             $btnCloseSearch = document.getElementById('btn-close-search');
 
-        // анимания для плейсходеров формы 
-        $inputFormName.addEventListener('input', function() {
-          if($inputFormName.value != '') {
-            $placeHolderInputFormName.classList.add('form__place-holder_update');
-          } else {
-            $placeHolderInputFormName.classList.remove('form__place-holder_update');
-          }
-        });
-        $inputFormSurname.addEventListener('input', function() {
-          if($inputFormSurname.value != '') {
-            $placeHolderInputFormSurname.classList.add('form__place-holder_update');
-          } else {
-            $placeHolderInputFormSurname.classList.remove('form__place-holder_update');
-          }
-        });
-        $inputFormLastname.addEventListener('input', function() {
-          if($inputFormLastname.value != '') {
-            $placeHolderInputFormLastname.classList.add('form__place-holder_update');
-          } else {
-            $placeHolderInputFormLastname.classList.remove('form__place-holder_update');
-          }
-        });
+        // форма удаления клиента
+        const formDeleteClient = document.createElement('form'),
+              headerFormDeleteClient = document.createElement('h2'),
+              divFormDeleteClient = document.createElement('div'),
+              btnDeleteFormDeleteClient = document.createElement('button'),
+              spinnerBtnDelete = document.createElement('span'),
+              btnCancelFormDeleteClient = document.createElement('button'),
+              btnCloseFormDeleteClient = document.createElement('button'),
+              formErrorDelete = document.createElement('div');
+            
+          $modalWindow.style.display = '';
+          formDeleteClient.classList.add('form', 'form-delete', 'flex');
+          headerFormDeleteClient.classList.add('form__title', 'form-delete__title');
+          headerFormDeleteClient.textContent = 'Удалить клиента';
+          divFormDeleteClient.classList.add('form-delete__descr');
+          divFormDeleteClient.textContent = 'Вы действительно хотите удалить данного клиента?';
+          btnDeleteFormDeleteClient.classList.add('mybtn', 'form__btn-purple', 'flex');
+          btnDeleteFormDeleteClient.setAttribute('type', 'submit');
+          btnDeleteFormDeleteClient.textContent = 'Удалить';
+          spinnerBtnDelete.classList.add('spinner-border', 'spinner-border-sm', 'spinner-border-btn-purple');
+          btnCancelFormDeleteClient.classList.add('form__btn-cancel-delete', 'form-delete__btn-cancel');
+          btnCancelFormDeleteClient.setAttribute('type', 'button');
+          btnCancelFormDeleteClient.textContent = 'Отмена';
+          btnCloseFormDeleteClient.classList.add('btn-close','btn-close-form', 'form-delete__btn-close');
+          btnCloseFormDeleteClient.setAttribute('type', 'button');
+          btnCloseFormDeleteClient.setAttribute('aria-label', 'Close');
+          formErrorDelete.classList.add('form__error');
 
+          $containerClients.append(formDeleteClient);
+          formDeleteClient.append(headerFormDeleteClient);
+          formDeleteClient.append(divFormDeleteClient);
+          formDeleteClient.append(formErrorDelete);
+          formDeleteClient.append(btnDeleteFormDeleteClient);
+          formDeleteClient.append(btnCancelFormDeleteClient);
+          formDeleteClient.append(btnCloseFormDeleteClient);
+          btnDeleteFormDeleteClient.prepend(spinnerBtnDelete);
 
-        // валидация полей формы 
-        const validator = new window.JustValidate('#formClient');
-        validator
-        .addField('#inputName', [
+          // форма создания и изменения клиента
+          const formClient = document.createElement('form'),
+              divHeaderFormClient = document.createElement('div'),
+              headerFormClient = document.createElement('h2'),
+              spanFormClient = document.createElement('span'),
+              divInputFormClient = document.createElement('div'),
+              labelSurnameFormClient = document.createElement('label'),
+              labelNameFormClient = document.createElement('label'),
+              labelLastnameFormClient = document.createElement('label'),
+              inputSurnameFormClient = document.createElement('input'),
+              inputNameFormClient = document.createElement('input'),
+              inputLastnameFormClient = document.createElement('input'),
+              placeholderSurnameFormClient = document.createElement('div'),
+              spanSurnameFormClient = document.createElement('span'),
+              placeholderNameFormClient = document.createElement('div'),
+              spanNameFormClient = document.createElement('span'),
+              placeholderLastnameFormClient = document.createElement('div'),
+              divContactsFormClient = document.createElement('div'),
+              divContactsGroupFormClient = document.createElement('div'),
+              btnAddContFormClient = document.createElement('button'),
+              btnSaveFormClient = document.createElement('button'),
+              btnDeleteFormClient = document.createElement('button'),
+              btnCloseFormClient = document.createElement('button'),
+              btnCancelFormClient = document.createElement('button'),
+              spinnerBtnSave = document.createElement('span'),
+              formError = document.createElement('div');
+          
+         
+          formClient.classList.add('form', 'form-update', 'flex');
+          formClient.setAttribute('id', 'formClient');
+          divHeaderFormClient.classList.add('form__container-title', 'flex');
+          headerFormClient.classList.add('form__title');
+          spanFormClient.classList.add('form__title-id');
+          spanFormClient.setAttribute('id', 'formTitleId');
+          divInputFormClient.classList.add('form__container-input');
+          labelNameFormClient.classList.add('form__placeinput');
+          labelLastnameFormClient.classList.add('form__placeinput');
+          labelSurnameFormClient.classList.add('form__placeinput');
+          inputNameFormClient.classList.add('form__input');
+          inputNameFormClient.setAttribute('type', 'text');
+          inputNameFormClient.setAttribute('id', 'inputName');
+          inputSurnameFormClient.classList.add('form__input');
+          inputSurnameFormClient.setAttribute('type', 'text');
+          inputSurnameFormClient.setAttribute('id', 'inputSurname');
+          inputLastnameFormClient.classList.add('form__input');
+          inputLastnameFormClient.setAttribute('type', 'text');
+          inputLastnameFormClient.setAttribute('id', 'inputLastname');
+          placeholderNameFormClient.classList.add('form__place-holder');
+          placeholderNameFormClient.textContent = 'Имя';
+          spanNameFormClient.textContent = '*';
+          placeholderSurnameFormClient.classList.add('form__place-holder');
+          placeholderSurnameFormClient.textContent = 'Фамилия';
+          spanSurnameFormClient.textContent = '*';
+          placeholderLastnameFormClient.classList.add('form__place-holder');
+          placeholderLastnameFormClient.textContent = 'Отчество';
+          divContactsFormClient.classList.add('flex', 'form__contacts');
+          divContactsFormClient.setAttribute('id', 'div-updatecontacts-1');
+          divContactsGroupFormClient.classList.add('flex', 'form__contacts-group');
+          divContactsGroupFormClient.setAttribute('id', 'div-updatecontacts');
+          btnAddContFormClient.classList.add('flex', 'form__contacts-btn');
+          btnAddContFormClient.setAttribute('type', 'button');
+          btnAddContFormClient.setAttribute('id', 'brn-update-add-contact');
+          btnAddContFormClient.textContent = 'Добавить контакт';
+          btnSaveFormClient.classList.add('btn', 'mybtn', 'form__btn-purple', 'flex');
+          btnSaveFormClient.setAttribute('type', 'submit');
+          btnSaveFormClient.setAttribute('id', 'btn-submit-formUpdate');
+          formError.classList.add('form__error');
+          
+          btnSaveFormClient.textContent = 'Сохранить';
+          spinnerBtnSave.classList.add('spinner-border', 'spinner-border-sm', 'spinner-border-btn-purple');
+          
+          btnDeleteFormClient.classList.add('form__btn-cancel-delete', 'form__btn-delete');
+          btnDeleteFormClient.setAttribute('id', 'btnDeleteFormClient');
+          btnDeleteFormClient.setAttribute('type', 'button');
+          btnDeleteFormClient.textContent = 'Удалить клиента';
+          btnCancelFormClient.classList.add('form__btn-cancel-delete', 'form__btn-cancel');
+          btnCancelFormClient.setAttribute('type', 'button');
+          btnCancelFormClient.textContent = 'Отмена';
+          btnCloseFormClient.classList.add('btn-close', 'btn-close-form');
+          btnCloseFormClient.setAttribute('aria-label', 'Close');
+          btnCloseFormClient.setAttribute('type', 'button');
+          btnCloseFormClient.setAttribute('id', 'btn-close-formUpdate');
+
+          $containerClients.append(formClient);
+          formClient.append(divHeaderFormClient);
+          divHeaderFormClient.append(headerFormClient);
+          divHeaderFormClient.append(spanFormClient);
+          formClient.append(divInputFormClient);
+          divInputFormClient.append(labelSurnameFormClient);
+          divInputFormClient.append(labelNameFormClient);
+          divInputFormClient.append(labelLastnameFormClient);
+          labelLastnameFormClient.append(inputLastnameFormClient);
+          labelLastnameFormClient.append(placeholderLastnameFormClient);
+          labelNameFormClient.append(inputNameFormClient);
+          labelNameFormClient.append(placeholderNameFormClient);
+          
+          labelSurnameFormClient.append(inputSurnameFormClient);
+          labelSurnameFormClient.append(placeholderSurnameFormClient);
+          formClient.append(divContactsFormClient);
+          divContactsFormClient.append(divContactsGroupFormClient);
+          divContactsFormClient.append(btnAddContFormClient);
+          formClient.append(formError);
+          formClient.append(btnSaveFormClient);
+          btnSaveFormClient.prepend(spinnerBtnSave);
+          
+          formClient.append(btnDeleteFormClient);
+          formClient.append(btnCancelFormClient);
+          formClient.append(btnCloseFormClient);
+
+         
+          const validator1 = new window.JustValidate('#formClient');
+
+          placeholderNameFormClient.append(spanNameFormClient);
+          placeholderSurnameFormClient.append(spanSurnameFormClient);
+          formClient.style.setProperty('--top-form', '19.9%');
+          $modalWindow.style.display = '';
+
+          // валидация на инпуты ФИО
+          validator1
+          .addField(inputNameFormClient, [
             {
                 rule: 'required',
                 errorMessage: '',
@@ -87,8 +197,8 @@
                 value: /^[A-ZА-ЯЁ\-]+$/i,
                 errorMessage: '',
             },
-        ])
-        .addField('#inputSurname', [
+          ])
+          .addField(inputSurnameFormClient, [
             {
                 rule: 'required',
                 errorMessage: '',
@@ -98,14 +208,14 @@
                 value: /^[A-ZА-ЯЁ\-]+$/i,
                 errorMessage: '',
             },
-        ])
-        .addField('#inputLastame', [
+          ])
+          .addField(inputLastnameFormClient, [
             {
                 rule: 'customRegexp',
                 value: /^[A-ZА-ЯЁ]+$/i,
                 errorMessage: '',
             },
-        ]);
+          ]);
 
         
         const parametrsTippy = {
@@ -113,6 +223,7 @@
           theme: 'default',
           arrow: true,
         }
+
         // изменение позиции top формы при изменении количества контактов в форме
         function correctTopForm(form, dir, coef = 1) {
           let topForm = getComputedStyle(form).getPropertyValue('--top-form');
@@ -132,8 +243,75 @@
           }
           form.style.setProperty('--top-form', newTop + '%');
         }
+
+        // валидация на контакты в форме
+        function validateContacts(type, input) {
+          if (type === 'Телефон') {
+            validator1
+              .addField(input, [
+                {
+                  rule: 'required',
+                  errorMessage: 'Заполните телефон',
+                }, 
+                {
+                  validator: (value) => {
+                  return value.replace(/\D+/g,"").length === 11;
+                  },
+                  errorMessage: 'Введите корректный номер',
+                },
+              ])
+          } else if (type === 'Email') {
+            validator1
+              .addField(input, [
+                {
+                  rule: 'required',
+                  errorMessage: 'Заполните email',
+                }, 
+                {
+                  rule: 'email',
+                  errorMessage: 'Введите корректный email',
+                }
+              ])
+          } else if (type === 'Facebook') {
+            validator1
+              .addField(input, [
+                {
+                  rule: 'required',
+                  errorMessage: 'Заполните адрес',
+                }, 
+                {
+                  rule: 'customRegexp',
+                  value: /^[A-Z\-\.\/]+$/i,
+                  errorMessage: 'Введите корректный адрес',
+                }
+              ])
+          } else if (type === 'Vk') {
+            validator1
+            .addField(input, [
+              {
+                rule: 'required',
+                errorMessage: 'Заполните адрес',
+              }, 
+              {
+                rule: 'customRegexp',
+                value: /^[A-Z\-\.\/]+$/i,
+                errorMessage: 'Введите корректный адрес',
+              }
+            ])
+          } else if (type === 'Другое') {
+            validator1
+            .addField(input, [
+              {
+                rule: 'required',
+                errorMessage: 'Заполните контакт',
+              }
+             
+            ])
+          }
+    }
         // для добавления форм для ввода контактов в форме создания клиента
         function addContacts(form, type = 'Телефон', value = '') {
+          // создание селекта, инпута и кнопки удаления
             const divInputGroupContact = document.createElement('div');
                 selectGroupContact = document.createElement('select');
                 optionGroupContact1 = document.createElement('option');
@@ -143,6 +321,7 @@
                 optionGroupContact5 = document.createElement('option');
                 inputGroupContact = document.createElement('input');
                 btnDeleteGroupContact = document.createElement('button');
+                // контейнеры, меняющие отступы
                 divContactsGroup = form.querySelector('.form__contacts-group');
                 divContacts = form.querySelector('.form__contacts');
             divContactsGroup.append(divInputGroupContact);
@@ -154,24 +333,10 @@
             selectGroupContact.append(optionGroupContact3);
             selectGroupContact.append(optionGroupContact4);
             selectGroupContact.append(optionGroupContact5);
+
+            // добавление маски телефона по умолчанию
             imtel.mask(inputGroupContact);
-
-            if (type == 'Телефон') {
-              optionGroupContact1.setAttribute('selected', 'true');
-            } else if (type == 'Email') {
-              optionGroupContact2.setAttribute('selected', 'true');
-              Inputmask.remove(inputGroupContact);
-            } else if (type == 'Facebook') {
-              optionGroupContact3.setAttribute('selected', 'true');
-              Inputmask.remove(inputGroupContact);
-            } else if (type == 'Vk') {
-              optionGroupContact4.setAttribute('selected', 'true');
-              Inputmask.remove(inputGroupContact);
-            } else if (type == 'Другое') {
-              optionGroupContact5.setAttribute('selected', 'true');
-              Inputmask.remove(inputGroupContact);
-            }
-
+            // настройка выпадающего списка у селекта
             divInputGroupContact.classList.add('group-contacts');
             selectGroupContact.setAttribute('name', 'select');
             optionGroupContact1.setAttribute('value', 'Телефон');
@@ -187,6 +352,25 @@
             btnDeleteGroupContact.classList.add('btn-group-contact');
             btnDeleteGroupContact.setAttribute('type', 'button');
             inputGroupContact.classList.add('form-control-input', 'is-active');
+
+            // корректная отрисовка селекта при получении контакта
+            if (type === 'Телефон') {
+              optionGroupContact1.setAttribute('selected', 'true');
+            } else if (type === 'Email') {
+              optionGroupContact2.setAttribute('selected', 'true');
+              Inputmask.remove(inputGroupContact);
+            } else if (type === 'Facebook') {
+              optionGroupContact3.setAttribute('selected', 'true');
+              Inputmask.remove(inputGroupContact);
+            } else if (type === 'Vk') {
+              optionGroupContact4.setAttribute('selected', 'true');
+              Inputmask.remove(inputGroupContact);
+            } else if (type === 'Другое') {
+              optionGroupContact5.setAttribute('selected', 'true');
+              Inputmask.remove(inputGroupContact);
+            }
+
+            // получение ширины окна для адаптива плейсхолдера
             let widthInput = getComputedStyle(inputGroupContact).getPropertyValue('--width-form-input-contacts');
             if (Number(widthInput.split('px')[0]) > 200) {
               inputGroupContact.placeholder = 'Введите данные контакта';
@@ -194,7 +378,7 @@
               inputGroupContact.placeholder = 'Введите данные';
             }
             inputGroupContact.value = value;
-            
+            // настройка селекта
             const choices = new Choices(selectGroupContact, {
                 searchEnabled: false,
                 editItems: true,
@@ -203,17 +387,20 @@
                 itemSelectText: '',
             });
             
+            validateContacts(type, inputGroupContact);
+            // переключение маски телефона в зависимости от значения селекта
             selectGroupContact.addEventListener('choice', function(event) {
               let inputTarget = event.target.closest('.group-contacts').querySelector('input');
-              if (event.detail.choice.value == 'Телефон') {
+              if (event.detail.choice.value === 'Телефон') {
                 imtel.mask(inputTarget);
               } else {
                 Inputmask.remove(inputTarget);
               }
+              validateContacts(event.detail.choice.value, inputTarget);
+
             })
             
-              
-              if (inputGroupContact.value != '') {
+              if (inputGroupContact.value !== '') {
                 inputGroupContact.classList.remove('is-active');
                 btnDeleteGroupContact.classList.add('is-active');
               } else {
@@ -224,7 +411,7 @@
               inputGroupContact.addEventListener('input', function(event) {
                 let inputTarget = event.target.closest('.group-contacts').querySelector('input');
                 let btnDeleteTarget = event.target.closest('.group-contacts').querySelector('.btn-group-contact');
-                if (inputTarget.value != '') {
+                if (inputTarget.value !== '') {
                   inputTarget.classList.remove('is-active');
                   btnDeleteTarget.classList.add('is-active');
                 } else {
@@ -233,7 +420,6 @@
                 }
               })
             
-
             btnDeleteGroupContact.addEventListener('click', function() {
               divInputGroupContact.remove();
               correctTopForm(form, 1)
@@ -247,16 +433,6 @@
             
 
         }
-        // при нажатии на кнопку добавить контакт
-        $btnAddContact.addEventListener('click', function() {
-          addContacts($formClient);
-          $divFormContacts.classList.add('is-click');
-          $divFormContacts1.classList.add('is-click');
-          correctTopForm($formClient, -1)
-          if ($divFormContacts.childElementCount > 9) {
-            $btnAddContact.style.display = 'none';
-          }
-        });
 
         // отрисовка иконок контактов в таблицу
         function printContactsSvg(contact, div) {
@@ -329,7 +505,6 @@
           btnNumbers.classList.add('btn-reset', 'contact__btn-numbers');
           divButtonContacts.classList.add('flex', 'contact__container');
           tableCol.append(divButtonContacts);
-          // console.log(array.slice(0, 4));
           if (array.length > 4) {
             for (const iterator of array.slice(0, 4)) {
               printContactsSvg(iterator, divButtonContacts);
@@ -358,7 +533,6 @@
         }
 
         function addClientDate(obj) {
-
               let spanCreateDate = document.createElement('span');
               let spanCreateTime = document.createElement('span');
               let spanUpdateDate = document.createElement('span');
@@ -373,9 +547,7 @@
               spanUpdateDate.textContent = Date.parse(updatesDate).toString('dd.MM.yyyy');
               spanUpdateTime.textContent = Date.parse(updatesTime).toString('HH:mm');
               
-              // spanCreateDate.classList.add('clients__table_td-span-date');
               spanCreateTime.classList.add('clients__table_td-span-time');
-              // spanUpdateDate.classList.add('clients__table_td-span-date');
               spanUpdateTime.classList.add('clients__table_td-span-time');
           
           return {
@@ -386,78 +558,6 @@
           };
           
       }
-      // валидация для контактов
-      function validateContacts(form, val) {
-        console.log('validate');
-        let nameContact = form.querySelectorAll('option');
-        let valueContact = form.querySelectorAll('.form-control-input');
-        let arrayNameContact = Array.from(nameContact);
-        let arrayValueContact = Array.from(valueContact);
-        let contacts = [];
-        for (let i = 0; i < arrayNameContact.length; i++) {
-          if (arrayNameContact[i].innerHTML == 'Телефон') {
-            
-            val
-              .addField(arrayValueContact[i], [
-                {
-                  rule: 'required',
-                  errorMessage: 'Заполните телефон',
-                }, 
-                {
-                  validator: (value) => {
-                  return value.replace(/\D+/g,"").length === 11;
-                  },
-                  errorMessage: 'Введите корректный номер',
-                },
-              ])
-          } else if (arrayNameContact[i].innerHTML == 'Email') {
-            val
-              .addField(arrayValueContact[i], [
-                {
-                  rule: 'required',
-                  errorMessage: 'Заполните email',
-                }, 
-                {
-                  rule: 'email',
-                  errorMessage: 'Введите корректный email',
-                }
-              ])
-          } else if (arrayNameContact[i].innerHTML == 'Facebook') {
-            val
-              .addField(arrayValueContact[i], [
-                {
-                  rule: 'required',
-                  errorMessage: 'Заполните адрес',
-                }, 
-                {
-                  rule: 'customRegexp',
-                  value: /^[A-Z\-\.\/]+$/i,
-                  errorMessage: 'Введите корректный адрес',
-                }
-              ])
-          } else if (arrayNameContact[i].innerHTML == 'Vk') {
-            val
-            .addField(arrayValueContact[i], [
-              {
-                rule: 'required',
-                errorMessage: 'Заполните адрес',
-              }, 
-              {
-                rule: 'customRegexp',
-                value: /^[A-Z\-\.\/]+$/i,
-                errorMessage: 'Введите корректный адрес',
-              }
-            ])
-          }
-          contacts.push(
-          {
-            type: arrayNameContact[i].innerHTML,
-            value: arrayValueContact[i].value,
-          }
-          )
-        }
-        return contacts;
-    }
     
         // удаление строк в таблице
         function deleteList() {
@@ -467,64 +567,158 @@
             }
           };
           // удаление клиента
-        async function deleteClient(id) {
-            let response = fetch(SERVER_URL + URL_PREFIX + '/' + id, {
+        async function deleteClientByID(id) {
+            const response = fetch(SERVER_URL + URL_PREFIX + '/' + id, {
               method: 'DELETE'
             });
+          
+              const err = new TypeError();
+              if ((await response).status === 200 || (await response).status === 201) {
+                return response;
+              } else if ((await response).status === 404 || (await response).status === 422 || (await response).status.toString[0] === '5') {
+                if ((await response).statusText) {
+                  err.errorMessages = (await response).statusText;
+                } else {
+                  err.errorMessages = 'Что-то пошло не так...';
+                }
+              } else {
+                err.errorMessages = 'Что-то пошло не так...';
+              }
+              throw err;
+            
           }
+          
         // поиск клиента
         $searchClientsInput.addEventListener('input', async function() {
           await renderClientsTable($searchClientsInput.value);
         });
         
         // запрос клиента для формы
-        async function responseClient(id) {
-            let response = await fetch(SERVER_URL + URL_PREFIX + '/' + id);
-            let infClient = await response.json();
-            return infClient;
+        async function requestClientByID(id) {
+            const response = await fetch(SERVER_URL + URL_PREFIX + '/' + id);
+            const infClient = await response.json();
+            if (infClient) {
+              const err = new TypeError();
+              if (response.status === 200 || response.status === 201) {
+                return infClient;
+              } else if (response.status === 404 || response.status === 422 || response.status.toString[0] === '5') {
+                if (infClient.message) {
+                  err.errorMessages = infClient.message;
+                } else {
+                  err.errorMessages = 'Что-то пошло не так...';
+                }
+              } else {
+                err.errorMessages = 'Что-то пошло не так...';
+              }
+              throw err;
+            } else {
+              console.log('dfdf');
+              throw new Error('Не удалось получить данные клиента');
+              
+            }
+          
+          }
+          
+        // отправка данных клиента на сервис
+        async function sendingClient(dataa, id) {
+            if (id === '') {
+              dop = '';
+              meth = 'POST';
+            } else {
+              dop = `/${id}`;
+              meth = 'PATCH';
+            }
+
+          // выполнение запроса
+          const resp = await fetch(SERVER_URL + URL_PREFIX + dop, {
+            method: meth,
+            body: JSON.stringify(dataa),
+            headers: {
+              'Content-type': 'application/json',
+              'Accept': 'application/json',
+            }
+            });
+          const clients = await resp.json();
+        
+          if (clients) {
+            const err = new TypeError();
+            if (resp.status === 200 || resp.status === 201) {
+              return clients;
+            } else if (resp.status === 404 || resp.status === 422) {
+              if (clients.errors) {
+                err.errorMessages = clients.errors.map(err => ({
+                          message: err.message,
+                }))
+              } else {
+                err.errorMessages = 'Что-то пошло не так...';
+              }
+            } else {
+              err.errorMessages = 'Что-то пошло не так...';
+            }
+            throw err;
+          } else {
+            throw new Error('Не удалось получить данные клиента');
+          }
         }
 
 
+        async function getClientsForRender(search = '') {
+          const response = await fetch(SERVER_URL + URL_PREFIX+ '?search=' + search);
+          const clientsList = await response.json();
+          if (clientsList) {
+            const err = new TypeError();
+            if (response.status === 200 || response.status === 201) {
+              return clientsList;
+            } else if (response.status === 404 || response.status === 422 || response.status.toString[0] === '5') {
+              if (clientsList.message) {
+                err.errorMessages = clientsList.message;
+              } else {
+                err.errorMessages = 'Что-то пошло не так...';
+              }
+            } else {
+              err.errorMessages = 'Что-то пошло не так...';
+            }
+            throw err;
+          } else {
+            throw new Error('Не удалось получить данные клиента');
+          }
+          
+        }
+
         // создание формы удаления
         async function createFormDeleteClient(id, tableStr) {
-          let formDeleteClient = document.createElement('form');
-          let headerFormDeleteClient = document.createElement('h2');
-          let divFormDeleteClient = document.createElement('div');
-          let btnDeleteFormDeleteClient = document.createElement('button');
-          let btnCancelFormDeleteClient = document.createElement('button');
-          let btnCloseFormDeleteClient = document.createElement('button');
-          // let spanID = document.createElement('span');
+          // получаем данные о кнопке для добавления спиннера
+          const btnDeleteTable = tableStr.querySelector('.table__body-btn-delete'),
+                spinnerDeleteTable = tableStr.querySelector('.table__body-btn-delete span');
+          // изменяем состояния формы и модального окна на активные
+          formDeleteClient.classList.add('is-active');
           $modalWindow.style.display = 'block';
-          formDeleteClient.classList.add('form', 'form-delete', 'flex', 'is-active');
-          headerFormDeleteClient.classList.add('form__title', 'form-delete__title');
-          headerFormDeleteClient.textContent = 'Удалить клиента';
-          divFormDeleteClient.classList.add('form-delete__descr');
-          divFormDeleteClient.textContent = 'Вы действительно хотите удалить данного клиента?';
-          btnDeleteFormDeleteClient.classList.add('mybtn', 'form__btn-purple');
-          btnDeleteFormDeleteClient.setAttribute('type', 'submit');
-          btnDeleteFormDeleteClient.textContent = 'Удалить';
-          btnCancelFormDeleteClient.classList.add('form__btn-cancel-delete', 'form-delete__btn-cancel');
-          btnCancelFormDeleteClient.setAttribute('type', 'button');
-          btnCancelFormDeleteClient.textContent = 'Отмена';
-          btnCloseFormDeleteClient.classList.add('btn-close','btn-close-form', 'form-delete__btn-close');
-          btnCloseFormDeleteClient.setAttribute('aria-label', 'Close');
-
-          // spanID.classList.add('form-delete__span-id');
-
-          $containerClients.append(formDeleteClient);
-          formDeleteClient.append(headerFormDeleteClient);
-          formDeleteClient.append(divFormDeleteClient);
-          formDeleteClient.append(btnDeleteFormDeleteClient);
-          formDeleteClient.append(btnCancelFormDeleteClient);
-          formDeleteClient.append(btnCloseFormDeleteClient);
-
+          // обработка отправки
           formDeleteClient.addEventListener('submit', async function(evt) {
             evt.preventDefault();
-            await deleteClient(id);
-            tableStr.remove();
-            formDeleteClient.classList.remove('is-active');
-            formDeleteClient.remove();
-            $modalWindow.style.display = 'none';
+            try {
+              btnDeleteTable.classList.remove('table__body-btn-delete-after');
+              spinnerDeleteTable.style.display = 'block';
+              spinnerBtnDelete.style.display = 'block';
+              await deleteClientByID(id);
+              tableStr.remove();
+              formDeleteClient.classList.remove('is-active');
+              formDeleteClient.remove();
+              $modalWindow.style.display = 'none';
+            } catch (err) {
+              if (err.name !== 'TypeError') throw err;
+                if (err.errorMessages) {
+                  
+                  formErrorDelete.textContent = err.errorMessages ;
+                  } else {
+                    formErrorDelete.textContent = 'Что-то пошло не так ...';
+                  }
+            } finally {
+              btnDeleteTable.classList.add('table__body-btn-delete-after');
+              spinnerDeleteTable.style.display = 'none';
+              spinnerBtnDelete.style.display = 'none';
+            }
+             
           })
 
           btnCancelFormDeleteClient.addEventListener('click', function() {
@@ -538,258 +732,201 @@
           });
         }
 
-        // создание формы изменения 
-        async function createFormUpdateClient(id, tableStr) {
-          const formUpdateClient = document.createElement('form');
-          const divHeaderFormUpdateClient = document.createElement('div');
-          const headerFormUpdateClient = document.createElement('h2');
-          const spanFormUpdateClient = document.createElement('span');
-          const divInputFormUpdateClient = document.createElement('div');
-          const labelSurnameFormUpdateClient = document.createElement('label');
-          const labelNameFormUpdateClient = document.createElement('label');
-          const labelLastnameFormUpdateClient = document.createElement('label');
-          const inputSurnameFormUpdateClient = document.createElement('input');
-          const inputNameFormUpdateClient = document.createElement('input');
-          const inputLastnameFormUpdateClient = document.createElement('input');
-          const divSurnameFormUpdateClient = document.createElement('div');
-          const spanSurnameFormUpdateClient = document.createElement('span');
-          const divNameFormUpdateClient = document.createElement('div');
-          const spanNameFormUpdateClient = document.createElement('span');
-          const divLastnameFormUpdateClient = document.createElement('div');
-
-          const divContactsFormUpdateClient = document.createElement('div');
-          const divContactsGroupFormUpdateClient = document.createElement('div');
-          const btnAddContFormUpdateClient = document.createElement('button');
-          const btnSaveFormUpdateClient = document.createElement('button');
-          const btnDeleteFormUpdateClient = document.createElement('button');
-          const btnCloseFormUpdateClient = document.createElement('button');
-          
-
-          $containerClients.append(formUpdateClient);
-          formUpdateClient.append(divHeaderFormUpdateClient);
-          divHeaderFormUpdateClient.append(headerFormUpdateClient);
-          divHeaderFormUpdateClient.append(spanFormUpdateClient);
-          formUpdateClient.append(divInputFormUpdateClient);
-          divInputFormUpdateClient.append(labelSurnameFormUpdateClient);
-          divInputFormUpdateClient.append(labelNameFormUpdateClient);
-          divInputFormUpdateClient.append(labelLastnameFormUpdateClient);
-          labelLastnameFormUpdateClient.append(inputLastnameFormUpdateClient);
-          labelLastnameFormUpdateClient.append(divLastnameFormUpdateClient);
-          labelNameFormUpdateClient.append(inputNameFormUpdateClient);
-          labelNameFormUpdateClient.append(divNameFormUpdateClient);
-          
-          labelSurnameFormUpdateClient.append(inputSurnameFormUpdateClient);
-          labelSurnameFormUpdateClient.append(divSurnameFormUpdateClient);
-          formUpdateClient.append(divContactsFormUpdateClient);
-          divContactsFormUpdateClient.append(divContactsGroupFormUpdateClient);
-          divContactsFormUpdateClient.append(btnAddContFormUpdateClient);
-          formUpdateClient.append(btnSaveFormUpdateClient);
-          formUpdateClient.append(btnDeleteFormUpdateClient);
-          formUpdateClient.append(btnCloseFormUpdateClient);
-
-          formUpdateClient.classList.add('form', 'form-update', 'flex', 'is-active');
-          formUpdateClient.setAttribute('id', 'formUpdateClient');
-          divHeaderFormUpdateClient.classList.add('form__container-title', 'flex');
-          headerFormUpdateClient.classList.add('form__title', 'form__title-update');
-          headerFormUpdateClient.textContent = 'Изменить данные';
-          spanFormUpdateClient.classList.add('form__title-id');
-          spanFormUpdateClient.setAttribute('id', 'formTitleId');
-          divInputFormUpdateClient.classList.add('form__container-input');
-          labelNameFormUpdateClient.classList.add('form__placeinput');
-          labelLastnameFormUpdateClient.classList.add('form__placeinput');
-          labelSurnameFormUpdateClient.classList.add('form__placeinput');
-          inputNameFormUpdateClient.classList.add('form__input');
-          inputNameFormUpdateClient.setAttribute('type', 'text');
-          inputNameFormUpdateClient.setAttribute('id', 'inputNameUpdate');
-          inputSurnameFormUpdateClient.classList.add('form__input');
-          inputSurnameFormUpdateClient.setAttribute('type', 'text');
-          inputSurnameFormUpdateClient.setAttribute('id', 'inputSurnameUpdate');
-          inputLastnameFormUpdateClient.classList.add('form__input');
-          inputLastnameFormUpdateClient.setAttribute('type', 'text');
-          inputLastnameFormUpdateClient.setAttribute('id', 'inputLastnameUpdate');
-          divNameFormUpdateClient.classList.add('form__place-holder');
-          divNameFormUpdateClient.textContent = 'Имя';
-          spanNameFormUpdateClient.textContent = '*';
-          divSurnameFormUpdateClient.classList.add('form__place-holder');
-          divSurnameFormUpdateClient.textContent = 'Фамилия';
-          spanSurnameFormUpdateClient.textContent = '*';
-          divLastnameFormUpdateClient.classList.add('form__place-holder');
-          divLastnameFormUpdateClient.textContent = 'Отчество';
-          divContactsFormUpdateClient.classList.add('flex', 'form__contacts');
-          divContactsFormUpdateClient.setAttribute('id', 'div-updatecontacts-1');
-          divContactsGroupFormUpdateClient.classList.add('flex', 'form__contacts-group');
-          divContactsGroupFormUpdateClient.setAttribute('id', 'div-updatecontacts');
-          btnAddContFormUpdateClient.classList.add('flex', 'form__contacts-btn');
-          btnAddContFormUpdateClient.setAttribute('type', 'button');
-          btnAddContFormUpdateClient.setAttribute('id', 'brn-update-add-contact');
-          btnAddContFormUpdateClient.textContent = 'Добавить контакт';
-          btnSaveFormUpdateClient.classList.add('mybtn', 'form__btn-purple');
-          btnSaveFormUpdateClient.setAttribute('type', 'submit');
-          btnSaveFormUpdateClient.setAttribute('id', 'btn-submit-formUpdate');
-          btnSaveFormUpdateClient.textContent = 'Сохранить';
-          btnDeleteFormUpdateClient.classList.add('form__btn-cancel-delete', 'form__btn-delete');
-          btnDeleteFormUpdateClient.setAttribute('id', 'btnDeleteFormUpdateClient');
-          btnDeleteFormUpdateClient.setAttribute('type', 'button');
-          btnDeleteFormUpdateClient.textContent = 'Удалить клиента';
-          btnCloseFormUpdateClient.classList.add('btn-close', 'btn-close-form');
-          btnCloseFormUpdateClient.setAttribute('aria-label', 'Close');
-          btnCloseFormUpdateClient.setAttribute('id', 'btn-close-formUpdate');
-          const validator1 = new window.JustValidate('#formUpdateClient');
-
-          divNameFormUpdateClient.append(spanNameFormUpdateClient);
-          divSurnameFormUpdateClient.append(spanSurnameFormUpdateClient);
-          formUpdateClient.style.setProperty('--top-form', '19.9%');
+        // создание формы добавления и изменения данных клиента 
+        async function createFormClient(id = '', tableStr = '') {
+          formClient.classList.add('is-active');
           $modalWindow.style.display = 'block';
+          clearForm(formClient);
+          // проверка, чтобы плейсхолдеры у ФИО поднимались наверх, если инпуты заполнены
+          inputNameFormClient.addEventListener('input', function() {
+            if(inputNameFormClient.value != '') {
+              placeholderNameFormClient.classList.add('form__place-holder_update');
+              
+            } else {
+              placeholderNameFormClient.classList.remove('form__place-holder_update');
+            }
+          });
+          inputSurnameFormClient.addEventListener('input', function() {
+            if(inputSurnameFormClient.value != '') {
+              placeholderSurnameFormClient.classList.add('form__place-holder_update');
+            } else {
+              placeholderSurnameFormClient.classList.remove('form__place-holder_update');
+            }
+          });
+          inputLastnameFormClient.addEventListener('input', function() {
+            if(inputLastnameFormClient.value != '') {
+              placeholderLastnameFormClient.classList.add('form__place-holder_update');
+            } else {
+              placeholderLastnameFormClient.classList.remove('form__place-holder_update');
+            }
+          });
 
-          let infClient = await responseClient(id);
-          spanFormUpdateClient.textContent = `ID: ${infClient.id}`;
-          divNameFormUpdateClient.classList.add('form__place-holder_update');
-          inputSurnameFormUpdateClient.value = infClient.surname;
-          divSurnameFormUpdateClient.classList.add('form__place-holder_update');
-          inputNameFormUpdateClient.value = infClient.name;
-          inputLastnameFormUpdateClient.value = infClient.lastName;
-          if (infClient.lastName != '') {
-            divLastnameFormUpdateClient.classList.add('form__place-holder_update');
-          }
-          correctTopForm(formUpdateClient, -1, infClient.contacts.length)
-          for (const cont of infClient.contacts) {
-            addContacts(formUpdateClient, cont.type, cont.value);
-            divContactsGroupFormUpdateClient.classList.add('is-click');
-            divContactsFormUpdateClient.classList.add('is-click');
-          }
+          // проверка на форму: новый клиент или изменить клиента 
+          // (логика: есть id - изменить, нет id - новый клиент)
+          if (id === '') {
+            spanFormClient.textContent = '';
+            btnCancelFormClient.classList.add('is-active');
+            btnDeleteFormClient.classList.remove('is-active');
+            headerFormClient.textContent = 'Новый клиент';
+          } else {
+            const btnUpdate = tableStr.querySelector('.table__body-btn-update');
+            const spinnerUpdate = tableStr.querySelector('.table__body-btn-update span');
+            btnCancelFormClient.classList.remove('is-active');
+            btnDeleteFormClient.classList.add('is-active');
+            headerFormClient.textContent = 'Изменить данные';
+            formError.textContent;
+            let infClient;
+            // запрос на данные клиента по id и отрисовка
+            try {
+              btnUpdate.classList.remove('table__body-btn-update-after');
+              spinnerUpdate.style.display = 'block';
+              infClient = await requestClientByID(id);
+              
+            } catch (err) {
+              console.log(err.errorMessages);
+              if (err.name !== 'TypeError') throw err;
+              if (err.errorMessages) { 
+                    formError.textContent = err.errorMessages;
+                }
+            } finally {
+              btnUpdate.classList.add('table__body-btn-update-after');
+              spinnerUpdate.style.display = 'none';
+            }
 
-          btnAddContFormUpdateClient.addEventListener('click', function() {
-            addContacts(formUpdateClient);
-            correctTopForm(formUpdateClient, -1)
-            divContactsGroupFormUpdateClient.classList.add('is-click');
-            divContactsFormUpdateClient.classList.add('is-click');
-            if (divContactsGroupFormUpdateClient.childElementCount > 9) {
-              btnAddContFormUpdateClient.style.display = 'none';
+            spanFormClient.textContent = `ID: ${infClient.id}`;
+            placeholderNameFormClient.classList.add('form__place-holder_update');
+            inputSurnameFormClient.value = infClient.surname;
+            placeholderSurnameFormClient.classList.add('form__place-holder_update');
+            inputNameFormClient.value = infClient.name;
+            inputLastnameFormClient.value = infClient.lastName;
+            if (infClient.lastName) {
+              placeholderLastnameFormClient.classList.add('form__place-holder_update');
+            }
+            // корректировка позиционирования по высоте формы в зависимости от количества контактов
+            correctTopForm(formClient, -1, infClient.contacts.length)
+            // отрисовка контактов в форму
+            for (const cont of infClient.contacts) {
+              // отрисовка контакта из массива
+              addContacts(formClient, cont.type, cont.value);
+              divContactsGroupFormClient.classList.add('is-click');
+              divContactsFormClient.classList.add('is-click');
+            }
+          }
+            
+          // обработка кнопки добавить контакт
+          btnAddContFormClient.addEventListener('click', function(evt) {
+            // отрисовка контакта
+            addContacts(formClient);
+            // корректировка позиционирования формы
+            correctTopForm(formClient, -1)
+            // изменение отступов у контейнеров группы контактов
+            divContactsGroupFormClient.classList.add('is-click');
+            divContactsFormClient.classList.add('is-click');
+            // ограничение на ввод не более 10 контактов (больше 10 - кнопка добавить контакт не доступна)
+            if (divContactsGroupFormClient.childElementCount > 9) {
+              btnAddContFormClient.style.display = 'none';
             }
           })
-
           
-          validator1
-          .addField('#inputNameUpdate', [
-            {
-                rule: 'required',
-                errorMessage: '',
-            },
-            {
-                rule: 'customRegexp',
-                value: /^[A-ZА-ЯЁ\-]+$/i,
-                errorMessage: '',
-            },
-          ])
-          .addField('#inputSurnameUpdate', [
-            {
-                rule: 'required',
-                errorMessage: '',
-            },
-            {
-                rule: 'customRegexp',
-                value: /^[A-ZА-ЯЁ\-]+$/i,
-                errorMessage: '',
-            },
-          ])
-          .addField('#inputLastnameUpdate', [
-            {
-                rule: 'customRegexp',
-                value: /^[A-ZА-ЯЁ]+$/i,
-                errorMessage: '',
-            },
-          ]);
 
-          formUpdateClient.addEventListener('submit', async function(evt) {
+          formClient.addEventListener('submit', async (evt) => {
             evt.preventDefault();
-            console.log('beforevalidate');
-            // console.log(validator1);
-            let cont = validateContacts(formUpdateClient, validator1);
-            let formcont = document.getElementById('div-updatecontacts');
-            let childsContactsGroup = Array.from(formcont.querySelectorAll('input'));
-            
-            console.log('aftervalidate');
-            if (inputNameFormUpdateClient.classList.contains(validateSuccessClass)&&
-            inputSurnameFormUpdateClient.classList.contains(validateSuccessClass)&&
-            childsContactsGroup.every(child => child.classList.contains(validateSuccessClass))) {
-              let bodyResponse = {
-                name: inputNameFormUpdateClient.value,
-                surname: inputSurnameFormUpdateClient.value,
-                lastName: inputLastnameFormUpdateClient.value,
-                contacts: cont,
-              };
-              const response = await fetch(SERVER_URL + URL_PREFIX + '/' + id, {
-                method: 'PATCH',
-                body: JSON.stringify(bodyResponse),
-                headers: {
-                  'Content-type': 'application/json',
-                }
+            // получаем контакты
+            let contacts = [];
+            let groupCont = formClient.querySelectorAll('.group-contacts');
+            for (const cont of groupCont) {
+              let option = cont.querySelector('option');
+              let input = cont.querySelector('input');
+              contacts.push({
+                type: option.value,
+                value: input.value,
               });
-              const clients = await response.json();
+            }
 
-              inputNameFormUpdateClient.value = '';
-              inputSurnameFormUpdateClient.value = '';
-              inputLastnameFormUpdateClient.value = '';
-              spanFormUpdateClient.textContent = '';
-              divNameFormUpdateClient.classList.remove('form__place-holder_update');
-              divSurnameFormUpdateClient.classList.remove('form__place-holder_update');
-              divLastnameFormUpdateClient.classList.remove('form__place-holder_update');
-
-              let contactsGroup = document.querySelectorAll('.group-contacts');
-              for (const contact of contactsGroup) {
-                contact.remove();
+            // получение всех инпутов контактов
+            let childrenContactsGroup = Array.from(divContactsGroupFormClient.querySelectorAll('input'));
+            if (childrenContactsGroup.every(child => child.classList.contains(validateSuccessClass))&&
+            inputNameFormClient.classList.contains(validateSuccessClass)&&
+            inputSurnameFormClient.classList.contains(validateSuccessClass)) {
+              // тело запроса
+              let bodyResponse = {
+                name: inputNameFormClient.value,
+                surname: inputSurnameFormClient.value,
+                lastName: inputLastnameFormClient.value,
+                contacts: contacts,
               }
 
-              divContactsFormUpdateClient.classList.remove('is-click');
-              divContactsGroupFormUpdateClient.classList.remove('is-click');
-              formUpdateClient.remove();
-              $modalWindow.style.display = 'none';
-
+              try {
+                spinnerBtnSave.style.display = 'block';
+                await sendingClient(bodyResponse, id);
+                
+                formClient.remove();
+                $modalWindow.style.display = 'none';
+              } catch (err) {
+                if (err.name !== 'TypeError') throw err;
+                if (err.errorMessages) {
+                    
+                    formError.textContent = err.errorMessages
+                        .map(errorMessage => errorMessage.message)
+                        .join('. ');
+                } else {
+                  formError.textContent = 'Что-то пошло не так ...';
+                }
+            } finally {
+                spinnerBtnSave.style.display = 'none';
+            }
               await renderClientsTable();
             }
-            
-
-          })
-
-          btnCloseFormUpdateClient.addEventListener('click', function() {
-            formUpdateClient.classList.remove('is-active');
+          
+          });
+          // обработчик на кнопку "крестик"
+          btnCloseFormClient.addEventListener('click', () => {
+            formClient.classList.remove('is-active');
             $modalWindow.style.display = 'none';
           });
-          btnDeleteFormUpdateClient.addEventListener('click', async function() {
-            formUpdateClient.classList.remove('is-active');
-            formUpdateClient.remove();
+          // обработчик на кнопку отмена
+          btnCancelFormClient.addEventListener('click', () => {
+            formClient.classList.remove('is-active');
+            $modalWindow.style.display = 'none';
+          });
+          // обработчик на кнопку удалить
+          btnDeleteFormClient.addEventListener('click', async function() {
+            formClient.classList.remove('is-active');
+            formClient.remove();
             $modalWindow.style.display = 'none';
             await createFormDeleteClient(id, tableStr);
-          })
-
+          });
+          // закрытие формы и модального окна при клике на модальное окно
           window.onclick = function(e) {
             if(e.target == $modalWindow) {
-              formUpdateClient.classList.remove('is-active');
+              formClient.classList.remove('is-active');
               $modalWindow.style.display = 'none';
             }
           };
+
+          
         
         }
 
         async function getClientItem(obj) {
             // создание строки и ячеек таблицы
-            let tableStr = document.createElement('tr');
-            let tableCol1 = document.createElement('td');
-            let tableCol2 = document.createElement('td');
-            let tableCol3 = document.createElement('td');
-            let tableCol4 = document.createElement('td');
-            let tableCol5 = document.createElement('td');
-            let tableCol6 = document.createElement('td');
-            // let tableCol7 = document.createElement('td');
-            let divGroupButtons = document.createElement('div');
-            let buttonUpdate = document.createElement('button'); 
-            let buttonDelete = document.createElement('button');
-            let divCreateDate = document.createElement('div');
-            let divUpdateDate = document.createElement('div');
-            let svgUpdate = document.createElement('svg');
-            let circleUpdate = document.createElement('circle');
-            let svgDelete = document.createElement('svg');
-            let circleDelete = document.createElement('circle');
+            const tableStr = document.createElement('tr'),
+                tableCol1 = document.createElement('td'),
+                tableCol2 = document.createElement('td'),
+                tableCol3 = document.createElement('td'),
+                tableCol4 = document.createElement('td'),
+                tableCol5 = document.createElement('td'),
+                tableCol6 = document.createElement('td'),
+                divGroupButtons = document.createElement('div'),
+                buttonUpdate = document.createElement('button'),
+                spanbuttonUpdate = document.createElement('span'), 
+                buttonDelete = document.createElement('button'),
+                spanbuttonDelete = document.createElement('span'), 
+                divCreateDate = document.createElement('div'),
+                divUpdateDate = document.createElement('div');
+               
+                
+               
 
             // добавление классов для строки таблицы
             tableStr.classList.add('clients__table-tr');
@@ -801,47 +938,30 @@
             tableCol4.classList.add('clients__table_td', 'clients__table_td-lastCor');
             tableCol5.classList.add('clients__table_td', 'clients__table_td-contacts');
             tableCol6.classList.add('clients__table_td', 'clients__table_td-update', 'table__header-col-last');
-            svgUpdate.classList.add('spinner', 'clients__spinner','clients__spinner-update');
-            svgDelete.classList.add('spinner', 'clients__spinner','clients__spinner-delete');
-            circleDelete.classList.add('spinner__path', 'clients__spinner-path-delete');
-            circleUpdate.classList.add('spinner__path', 'clients__spinner-path-update');
-            svgUpdate.setAttribute('viewBox', '0 0 50 50');
-            svgDelete.setAttribute('viewBox', '0 0 50 50');
-            circleDelete.setAttribute('cx', '25');
-            circleDelete.setAttribute('cy', '25');
-            circleDelete.setAttribute('r', '20');
-            circleDelete.setAttribute('fill', 'none');
-            circleDelete.setAttribute('stroke-width', '5');
-            circleUpdate.setAttribute('cx', '25');
-            circleUpdate.setAttribute('cy', '25');
-            circleUpdate.setAttribute('r', '20');
-            circleUpdate.setAttribute('fill', 'rgba(152, 115, 255, 1)');
-            circleUpdate.setAttribute('stroke-width', '5');
-            // tableCol7.classList.add('clients__table_td');
-            // tableCol7.classList.add('table__header-col-last');
+            // отрисовка svg картинок для кнопок "изменить" и "удалить"
+           
+            // контейнеры для svg для контактов
             divCreateDate.classList.add('flex', 'clients__table_td-div-date');
             divUpdateDate.classList.add('flex', 'clients__table_td-div-date');
-
+            // получение красивых данных по дате создания и изменения
             let dates = addClientDate(obj);
             divCreateDate.append(dates.spanCreateDate);
             divCreateDate.append(dates.spanCreateTime);
             divUpdateDate.append(dates.spanUpdateDate);
             divUpdateDate.append(dates.spanUpdateTime);
-
-
-
-            tableCol3.append(divCreateDate);
-            tableCol4.append(divUpdateDate);
             tableCol1.textContent = obj.id;
             tableCol2.textContent = obj.fio;
+            tableCol3.append(divCreateDate);
+            tableCol4.append(divUpdateDate);
+            // отрисовка контактов в виде svg и добавление в ячейку
             getContactListForTable(obj.contacts, tableCol5);
+            // добавление кнопок изменить/удалить
             buttonDelete.textContent = 'Удалить';
-            buttonDelete.classList.add('table__body-btn');
-            buttonDelete.classList.add('table__body-btn-delete', 'table__body-btn-delete-after');
-            // buttonDelete.classList.add('table__body-btn-delete');
+            buttonDelete.classList.add('table__body-btn', 'table__body-btn-delete', 'table__body-btn-delete-after', 'flex');
+            spanbuttonDelete.classList.add('spinner-border', 'spinner-border-sm', 'spinner-border-btn-table', 'spinner-border-btn-table-delete');
             buttonUpdate.textContent = 'Изменить';
-            buttonUpdate.classList.add('table__body-btn');
-            buttonUpdate.classList.add('table__body-btn-update', 'table__body-btn-update-after');
+            buttonUpdate.classList.add('table__body-btn','table__body-btn-update', 'table__body-btn-update-after', 'flex');
+            spanbuttonUpdate.classList.add('spinner-border', 'spinner-border-sm', 'spinner-border-btn-table', 'spinner-border-btn-table-update');
             divGroupButtons.classList.add('flex', 'table__body-group-btn');
             divGroupButtons.append(buttonUpdate);
             divGroupButtons.append(buttonDelete);
@@ -852,67 +972,54 @@
             tableStr.append(tableCol4);
             tableStr.append(tableCol5);
             tableStr.append(tableCol6);
-            // tableStr.append(tableCol7);
-            // tableCol7.append(buttonDelete);
             tableCol6.append(divGroupButtons);
-            buttonDelete.append(svgDelete);
-            buttonUpdate.append(svgUpdate);
-            svgDelete.append(circleDelete);
-            svgUpdate.append(circleUpdate);
-
-            
+            buttonDelete.prepend(spanbuttonDelete);
+            buttonUpdate.prepend(spanbuttonUpdate);
+          
+            // обработчик кнопки изменить - создание формы изменения данных клиента
             buttonUpdate.addEventListener('click', function() {
-              // $formClient.classList.add('is-active');
               $modalWindow.style.display = 'block';
-              // $titleFormNewClient.classList.remove('is-active');
-              // $titleFormUpdateClient.classList.add('is-active');
-              // btnCancelFormClient.classList.remove('is-active');
-              // $btnDeleteFormUpdateClient.classList.add('is-active');
-              createFormUpdateClient(obj.id, tableStr);
+              createFormClient(obj.id, tableStr);
             });
-
+            // обработчик кнопки удалить - создание формы удаления клиента
             buttonDelete.addEventListener('click', async function() {
               await createFormDeleteClient(obj.id, tableStr);
-              // let newFormDeleteClient = createFormDeleteClient(obj.id);
-              // newFormDeleteClient.formDeleteClient.classList.add('is-active');
-              // $modalWindow.style.display = 'block';
             });
-            // newFormDeleteClient.btnDeleteFormDeleteClient.addEventListener('click', async function() {
-            //   await deleteClient(obj.id);
-            //   tableStr.remove();
-            //   newFormDeleteClient.formDeleteClient.classList.remove('is-active');
-            //   newFormDeleteClient.formDeleteClient.remove();
-            //   $modalWindow.style.display = 'none';
-            // });
-            // newFormDeleteClient.btnCancelFormDeleteClient.addEventListener('click', function() {
-            //   newFormDeleteClient.formDeleteClient.classList.remove('is-active');
-            //   $modalWindow.style.display = 'none';
-            // });
-    
-            // newFormDeleteClient.btnCloseFormDeleteClient.addEventListener('click', function() {
-            //   newFormDeleteClient.formDeleteClient.classList.remove('is-active');
-            //   $modalWindow.style.display = 'none';
-            // });
-
-            // buttonUpdate.addEventListener('click', async function() {
-            //   let infClient = await responseClient(obj.id);
-            //   renderClientFormFromServer(infClient);
-            // })
             
         }
-
+        // задание флагов для сортировки по умолчанию: по id и по возрастанию
         let sortProperty = 'id';
         let sortDir = false;
+        // задание классов для шапки колонки id - фиолетовый цвет
         $btnTableID.classList.add('is-active');
         $btnTableArrowID.classList.add('is-active');
         $btnTableArrowID.classList.add('is-trans');
+
+        // функция отрисовки клиентов в таблицу, полученных с сервера
+        // доп аргумент - строка из поиска для фильтрации
         async function renderClientsTable(search = '') {
-            const response = await fetch(SERVER_URL + URL_PREFIX+ '?search=' + search);
-            const clientsList = await response.json();
+          let clientsList;
+          try {
+            $mainError.style.display = 'none';
+            $spinnerTableBody.style.display = 'block';
+            clientsList = await getClientsForRender(search);
+          } catch (err) {
+            // console.log($mainError);
+            $mainError.style.display = 'block';
+            if (err.name !== 'TypeError') throw err
+              if (err.errorMessages) {   
+                $mainError.textContent = err.errorMessages;
+            } else {
+              $mainError.textContent = 'Что-то пошло не так ...';
+            }
+              
+          } finally {
+            $spinnerTableBody.style.display = 'none';
+          }
+            // let clientsList = await getClientsForRender(search);
             deleteList()
             let copyList = [...clientsList];
             copyList = addClientFIO(copyList);
-            // copyList = addClientCreateDate(copyList);
 
             // сортировка
             copyList = copyList.sort(function(a, b) {
@@ -922,69 +1029,42 @@
 
             }); 
 
-
+            // отрисовка каждого клиента в таблицу
             for (const iterator of copyList) {
                 getClientItem(iterator);
             }
         }
-
-        // console.log(clickId);
-        function clearForm() {
-      
-          $inputFormName.value = '';
-          // $spanIDFormUpdateClient.textContent = '';
-          $inputFormName.classList.remove(validationErrorClass);
-          $placeHolderInputFormName.classList.remove('form__place-holder_update');
-          $inputFormSurname.value = '';
-          $inputFormSurname.classList.remove(validationErrorClass);
-          $placeHolderInputFormSurname.classList.remove('form__place-holder_update');
-          $inputFormLastname.value = '';
-          $placeHolderInputFormLastname.classList.remove('form__place-holder_update');
-          $formClient.style.setProperty('--top-form', '26.6%');
-          let contactsGroup = document.querySelectorAll('.group-contacts');
+        // очищение формы
+        function clearForm(form) {
+          const inputsFIO = form.querySelectorAll('.form__input'),
+              placeholdersFIO = form.querySelectorAll('.form__place-holder'),
+              contactsGroup = form.querySelectorAll('.group-contacts'),
+              divcontacts = document.getElementById('div-updatecontacts'),
+              divcontacts1 = document.getElementById('div-updatecontacts-1');
+          // удаление данных из инпутов
+          for (const input of inputsFIO) {
+            input.value = '';
+            input.classList.remove(validationErrorClass);
+          }
+          // возвращение плейсхолдеров в обычное состояние (в строке)
+          for (const placeholder of placeholdersFIO) {
+            placeholder.classList.remove('form__place-holder_update');
+          }
+          // удаление контактов
           for (const contact of contactsGroup) {
             contact.remove();
           }
-          $divFormContacts.classList.remove('is-click');
-          $divFormContacts1.classList.remove('is-click');
+          // удаление отступов у контейнеров для контактов
+          divcontacts.classList.remove('is-click');
+          divcontacts1.classList.remove('is-click');
+          // задание форме первичного позиционирования по вертикали
+          form.style.setProperty('--top-form', '26.6%');
+          
       }
-
+      // первоначальная отрисовка списка клиентов
       await renderClientsTable();
-      
 
-        $formClient.addEventListener('submit', async function(e) {
-          e.preventDefault();
-
-          let cont = validateContacts($formClient, validator);
-          let formcont = document.getElementById('div-contacts');
-          let childsContactsGroup = Array.from(formcont.querySelectorAll('input'));
-          // console.log(cont[0].value.replace(/\D+/g,"").length);
-
-
-          if($inputFormName.classList.contains(validateSuccessClass)&&
-          $inputFormSurname.classList.contains(validateSuccessClass)&&
-          childsContactsGroup.every(child => child.classList.contains(validateSuccessClass))) {
-            let bodyResponse = {
-              name: $inputFormName.value,
-              surname: $inputFormSurname.value,
-              lastName: $inputFormLastname.value,
-              contacts: cont,
-            };
-            const response = await fetch(SERVER_URL + URL_PREFIX, {
-                  method: 'POST',
-                  body: JSON.stringify(bodyResponse),
-                  headers: {
-                    'Content-type': 'application/json',
-                  }
-                });
-                const clients = await response.json();
-            
-            clearForm();
-            
-          }
-          await renderClientsTable();
-        });
-
+        // сортировка по клику заголовка колонки id
         $btnTableID.addEventListener('click', async function() {
             sortDir = !sortDir;
             sortProperty = 'id';
@@ -1002,6 +1082,7 @@
             $btnTableArrowUpdateDate.classList.remove('is-active');
             await renderClientsTable();
         });
+        // сортировка по клику заголовка колонки ФИО
         $btnTableFIO.addEventListener('click', async function() {
             sortDir = !sortDir;
             sortProperty = 'fio';
@@ -1019,7 +1100,7 @@
             $btnTableArrowUpdateDate.classList.remove('is-active');
             await renderClientsTable();
         });
-
+        // сортировка по клику заголовка колонки Дата создания
         $btnTableCreateDate.addEventListener('click', async function() {
             sortDir = !sortDir;
             sortProperty = 'createdAt';
@@ -1037,7 +1118,7 @@
             $btnTableArrowUpdateDate.classList.remove('is-active');
             await renderClientsTable();
         });
-
+        // сортировка по клику заголовка колонки изменения
         $btnTableUpdateDate.addEventListener('click', async function() {
             sortDir = !sortDir;
             sortProperty = 'updatedAt';
@@ -1058,54 +1139,22 @@
 
         // модальное окно
         $btnAddClient.addEventListener('click', function() {
-          $formClient.classList.add('is-active');
+          createFormClient();
           $modalWindow.style.display = 'block';
-          // $titleFormNewClient.classList.add('is-active');
-          // $titleFormUpdateClient.classList.remove('is-active');
-          // $btnCancelFormClient.classList.add('is-active');
-          // $btnDeleteFormUpdateClient.classList.remove('is-active');
         });
       
-        $btnCloseFormClient.addEventListener('click', function() {
-          $formClient.classList.remove('is-active');
-          clearForm();
-          $modalWindow.style.display = 'none';
-        });
-        $btnCancelFormClient.addEventListener('click', function() {
-          $formClient.classList.remove('is-active');
-          clearForm();
-          $modalWindow.style.display = 'none';
-        });
-
-        // $btnCancelFormDeleteClient.addEventListener('click', function() {
-        //   $formDeleteClient.classList.remove('is-active');
-        //   $modalWindow.style.display = 'none';
-        // });
-
-        // $btnCloseFormDeleteClient.addEventListener('click', function() {
-        //   $formDeleteClient.classList.remove('is-active');
-        //   $modalWindow.style.display = 'none';
-        // });
-      
-        window.onclick = function(e) {
-          if(e.target == $modalWindow) {
-            $formClient.classList.remove('is-active');
-            $modalWindow.style.display = 'none';
-          }
-        };
-
-      
-
-        let simpleBar = new SimpleBar(document.getElementById('tbody'), {
+      // скролл
+        let simpleBar = new SimpleBar(document.getElementById('table'), {
           autoHide: false,
           scrollbarMaxSize: 70
         });
 
+        // в мобильной версии: лого - кнопка для открытия поиска (фильтрации)
         $btnOpenSearch.addEventListener('click', function() {
           $searchClientsInput.classList.add('is-active');
           $btnCloseSearch.classList.add('is-active');
         })
-
+        // в мобильной версии: появляется кнопка крестик для закрытия поиска (фильтрации)
         $btnCloseSearch.addEventListener('click', function() {
           $searchClientsInput.classList.remove('is-active');
           $btnCloseSearch.classList.remove('is-active');

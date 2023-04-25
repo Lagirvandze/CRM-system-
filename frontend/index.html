@@ -24,35 +24,16 @@
 </head>
 <body>
     <div class="modalBackground" id="modalWindow"> </div>
-    <div class="container container-form" id="container-form">
-        
-
-        <!-- <form action="#" class="form form-delete flex" id="formDeleteClient">
-            <h2 class="form__title form-delete__title">
-                Удалить клиента
-            </h2>
-            <div class="form-delete__descr">
-                Вы действительно хотите удалить данного клиента?
-            </div>
-            <button class="mybtn form__btn-purple" type="button" id="btnDeleteFormDeleteClient">
-                Удалить
-            </button>
-            <button class="form__btn-cancel-delete form-delete__btn-cancel" id="btnCancelFormDeleteClient">
-                Отмена
-            </button>
-            <button type="button" class="btn-close form-delete__btn-close" aria-label="Close" id="btnCloseFormDeleteClient"></button>
-        </form> -->
-    </div>
     <div class="container " id="clients">
-        <form action="#" class="form form-client flex" id="formClient">
+        <!-- <form action="#" class="form form-client flex" id="formClient">
             <div class="form__container-title flex">
                 <h2 class="form__title form__title-new is-active">
                     Новый клиент
                 </h2>
-                <!-- <h2 class="form__title form__title-update">
+                <h2 class="form__title form__title-update">
                     Изменить данные
                 </h2>
-                <span class="form__title-id" id="formTitleId"></span> -->
+                <span class="form__title-id" id="formTitleId"></span>
             </div>
             <div class="form__container-input">
                 <label class="form__placeinput">
@@ -84,11 +65,11 @@
             <button class="form__btn-cancel-delete form__btn-cancel is-active" id="btnCancelFormClient">
                 Отмена
             </button>
-            <!-- <button class="form__btn-cancel-delete form__btn-delete" id="btnDeleteFormUpdateClient">
+            <button class="form__btn-cancel-delete form__btn-delete" id="btnDeleteFormUpdateClient">
                 Удалить клиента
-            </button> -->
+            </button>
             <button type="button" class="btn-close btn-close-form" aria-label="Close" id="btn-close-formClient"></button>
-        </form>
+        </form> -->
         <div class="header__container">
             <div class="container-content">
             <div class="header flex">
@@ -112,8 +93,8 @@
             <div class="clients" >
                
                <h1 class="clients__title">Клиенты</h1> 
-               <table class="table clients__header-table" id="table" cellpadding="100">
-                <thead class="table__head">
+               <table class="table clients__header-table" id="table" cellpadding="19px">
+                <thead class="table__head sticky">
                     <tr>
                         <th class="table__header table__header-id table__header-col-first" id="table-header-id">
                             <button class="table__btn table__btn-id" id="table-btn-id">
@@ -162,14 +143,14 @@
                         </th>
                     </tr>
                 </thead>
+                <tbody id="tbody" class="container-tbody">
+                    <div id="spinner-table-body" class="spinner-border spinner-border-table" role="status">
+                        <span class="visually-hidden">Загрузка...</span>
+                    </div>
+                </tbody>
                 </table>
-                <div id="tbody" class="container-tbody"> 
-                    <svg id="spinnerTBody" class="spinner container-tbody_spinner" viewBox="0 0 50 50">
-                        <circle class="spinner__path container-tbody_spinner-path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
-                    </svg>
-                    <table class="table__main-body" cellpadding="18px">
-                        <tbody class="table__body"></tbody>
-                    </table>
+                <div class="error">
+                    
                 </div>
                 <button class="mybtn clients__btn flex" id="btn-add-client">
                     <svg class="clients__btn-svg" width="23" height="16" viewBox="0 0 23 16" fill="none" xmlns="http://www.w3.org/2000/svg">

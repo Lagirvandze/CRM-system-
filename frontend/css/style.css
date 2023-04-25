@@ -54,7 +54,7 @@ html {
     --color-black-333: #333;
     --color-white-fff: #fff;
     --color-gray-E5E5E5:#E5E5E5;
-    --color-gray-F5F5F5:#F5F5F5;
+    --color-gray-F5F5F5:rgba(245, 245, 245, 1);
     --color-gray-B0B0B0: #B0B0B0;
     --color-gray-C8C5D1: #C8C5D1;
     --color-gray-E7E5EB: #E7E5EB;
@@ -129,6 +129,7 @@ html {
   }
 
   .mybtn {
+    /* width: 147px; */
     position: relative;
     align-items: center;
     margin: 0 auto;
@@ -142,7 +143,7 @@ html {
     color: var(--color-purple-9873FF);
     background-color: transparent;
     border: 1px solid var(--color-purple-9873FF);
-    border-radius: none;
+    border-radius: 0px;
     transition-property: background-color, color, border;
     transition-timing-function: ease-in-out;
     transition-duration: .3s;
@@ -228,6 +229,15 @@ html {
     position: absolute;
     top: 19px;
     right: 19px;
+}
+.form__error {
+    max-width: 255px;
+    margin: 0 auto;
+    margin-bottom: 9px;
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 14px;
+    color: var(--color-orange-F06A4D);
 }
 
 .form__title {
@@ -334,8 +344,6 @@ html {
     color: var(--color-gray-B0B0B0);
 }
 
-
-
 .form__contacts {
     width: 100%;
     min-height: 35px;
@@ -407,12 +415,39 @@ html {
 
 
 .form__btn-purple {
+    /* width: 147px; */
     position: relative;
+    gap: 6px;
     margin-bottom: 5px;
     padding-left: 35px;
     padding-right: 35px;
     background-color: var(--color-purple-9873FF);
     color: var(--color-white-fff);
+}
+
+.spinner-border {
+    display: none;
+}
+
+.spinner-border-btn-purple {
+    width: 10px;
+    height: 10px;
+    border-width: 2px;
+    color: rgba(184, 158, 255, 1);
+}
+
+.spinner-border-btn-table {
+    width: 10px;
+    height: 10px;
+    border-width: 2px;
+}
+
+.spinner-border-btn-table-update {
+    color: rgba(152, 115, 255, 1);
+}
+
+.spinner-border-btn-table-delete {
+    color: var(--color-orange-F06A4D);
 }
 
 .form__btn-cancel-delete {
@@ -452,14 +487,14 @@ html {
     display: block;
 } */
 
-/* .form__btn-cancel,
+.form__btn-cancel,
 .form__btn-delete {
     display: none;
 }
 .form__btn-cancel.is-active,
 .form__btn-delete.is-active {
     display: block;
-} */
+}
 
 .form__btn-cancel-delete::before {
     position: absolute;
@@ -550,9 +585,9 @@ html {
     height: 37px !important;
 }
 
-.btn {
+/* .btn {
     width: 123px;
-}
+} */
 
 .form-control-input {
     --width-form-input-contacts: 240px;
@@ -793,24 +828,26 @@ html {
 }
 
 .clients__header-table {
+    position: relative;
     padding-left: 20px;
-    padding-bottom: 40px;
-    margin-bottom: 0;
+    /* padding-bottom: 40px; */
+    margin-bottom: 40px;
     font-style: normal;
     font-weight: 400;
     font-size: 14px;
     line-height: 19px;
     color: var(--color-black-333);
+    /* overflow: hidden; */
+    height: 325px;
 }
 
 .table>:not(caption)>*>* {
-    padding-top: 20px;
+    padding: 0;
 }
-
+.table>:not(:last-child)>:last-child>* {
+    border-bottom-color: var(--color-gray-F5F5F5);
+}
 .table__body {
-    /* width: 1186px;
-    height: 300px;
-    overflow-x: auto; */
     background-color: var(--color-white-fff);
 }
 
@@ -820,56 +857,43 @@ html {
 
 .container-tbody {
     position: relative;
-    max-width: 1186px;
+    height: 300px;
+    overflow: hidden;
+}
+.container-tbody::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
     height: 300px;
     margin-bottom: 40px;
     background-color: var(--color-white-fff);
+    z-index: -1;
 }
 
-.spinner {
-    display: none;
-    animation: rotate 2s linear infinite;
-    z-index: 200;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin: -25px 0 0 -25px;
+
+.spinner-border-table {
+    display: block;
     width: 72px;
     height: 72px;
+    position: absolute;
+    top: 40%;
+    left: 47%;
+    z-index: 100;
+    color: var(--color-purple-9873FF);
+    border-width: 8px;
 }
 
-.spinner__path {
-    stroke: rgba(152, 115, 255, 1);
-    stroke-linecap: round;
-    animation: dash 1.5s ease-in-out infinite;
-}
-
-.form__spinner {
+.error {
     display: none;
-    width: 10px;
-    height: 10px;
-    top: 95%;
-    left: 45px;
-}
-    
-.form__spinner-path {
-    stroke: rgba(184, 158, 255, 1);
+    text-align: center;
+    margin: 0 auto;
+    margin-bottom: 10px;
+    color: var(--color-orange-F06A4D);
 }
 
-.clients__spinner {
-    display: block;
-    width: 10px;
-    height: 10px;
-    top: 120%;
-    left: 10px;
-}
 
-.clients__spinner-path-delete {
-    stroke: var(--color-orange-F06A4D);
-}
-.clients__spinner-path-delete {
-    stroke: var(--color-purple-9873FF);
-}
 
 @keyframes rotate {
     100% {
@@ -896,8 +920,18 @@ html {
     overflow: auto;
   }
 .simplebar-scrollbar:before {
-    width: 3px;
+    
     background: var(--color-light-purple-B89EFF);
+  }
+
+  .simplebar-vertical .simplebar-scrollbar:before {
+    width: 3px;
+  }
+  .simplebar-track.simplebar-horizontal {
+    height: 5px;
+  }
+  .simplebar-horizontal .simplebar-scrollbar:before {
+    height: 5px;
   }
   
 .simplebar-scrollbar.simplebar-visible:before {
@@ -909,7 +943,12 @@ html {
   }
 
 .table__head {
-    border-color: transparent;
+    top: -1px;
+    position: sticky;
+    border-color: var(--color-gray-F5F5F5);
+    background-color: var(--color-gray-F5F5F5);
+    opacity: 1;
+    z-index: 10;
 }
 
 .table>tbody {
@@ -1115,8 +1154,11 @@ html {
 
 
 .table__body-btn { 
+    
     position: relative;
     padding-left: 0;
+    gap: 3px;
+    align-items: center;
     border: none;
     background: none;
     font-style: normal;
@@ -1219,6 +1261,7 @@ html {
 
 .clients__table-tr {
     height: 60px;
+    background-color: var(--color-white-fff);
     border-bottom: 1px solid rgba(200, 197, 209, 0.5);
     border-bottom: 1px solid rgba(200, 197, 209, 0.5);
 }
@@ -1316,9 +1359,10 @@ html {
         top: 28.5%; 
     }
 
-    .spinner {
+    .spinner-border-table {
         width: 36px;
         height: 36px;
+        border-width: 4px;
     }
 }
 @media (max-width: 914px) {
@@ -1356,13 +1400,13 @@ html {
 
     .table__header-createDate, .clients__table_td-createDate,
     .table__header-lastCor {
-        /* width: 142px; */
+
         min-width: 90px;
     }
 
     .clients__table_td-lastCor {
         padding-left: 0  !important;
-        /* min-width: 90px; */
+
     }
     .table__header-contacts,
     .clients__table_td-contacts {
@@ -1382,6 +1426,10 @@ html {
     .table__btn-fio {
         width: 170px;
     }
+    .form {
+        left: 23%;
+    }
+   
 }
 
 
